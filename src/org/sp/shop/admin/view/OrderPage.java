@@ -37,6 +37,7 @@ public class OrderPage extends Page{
 		
 		for(int i=0; i<subTitle.length; i++) {
 			subNavi[i] = new JLabel(subTitle[i]);
+			subNavi[i].setPreferredSize(new Dimension(140, 45));
 			p_west.add(subNavi[i]);
 		}
 	}
