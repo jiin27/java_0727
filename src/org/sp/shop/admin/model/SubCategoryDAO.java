@@ -26,7 +26,7 @@ public class SubCategoryDAO {
 
 		
 		try {
-			Class.forName("oracle.jdbc.driver.OracelDriver");
+			Class.forName("oracle.jdbc.driver.OracleDriver");
 			con=DriverManager.getConnection(url, user, password);
 			
 			String sql="select * from subcategory where topcategory_idx=?";
