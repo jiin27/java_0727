@@ -10,11 +10,15 @@ import java.util.List;
 
 import org.sp.shop.admin.domain.TopCategory;
 
+import util.DBManager;
+
 //TopCategory 에 대한 CRUD 만을 수행하는 DAO 객체
 public class TopCategoryDAO {
-	String url="jdbc:oracle:thin:@localhost:1521:XE";
-	String user="shop";
-	String password="1234";
+	DBManager dbManager;
+	
+	public TopCategoryDAO(DBManager dbManager) {
+		this.dbManager = dbManager;
+	}
 	
 	//모든 레코드 가져오기
 	public List selectAll() {
@@ -24,8 +28,8 @@ public class TopCategoryDAO {
 		List<TopCategory> list = new ArrayList<TopCategory>();
 		
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			con=DriverManager.getConnection(url, user, password);
+			con=dbManager.connect();
+			
 			if(con==null) {
 				System.out.println("접속 실패");
 			}else {
@@ -43,34 +47,10 @@ public class TopCategoryDAO {
 				}
 			}
 			
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			if(rs!=null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if(pstmt!=null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if(con!=null) {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-
-
+			dbManager.release(con, pstmt, rs);
 		}
 		return list;
 	}

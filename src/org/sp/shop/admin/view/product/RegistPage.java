@@ -28,6 +28,8 @@ import org.sp.shop.admin.domain.TopCategory;
 import org.sp.shop.admin.model.SubCategoryDAO;
 import org.sp.shop.admin.model.TopCategoryDAO;
 
+import util.DBManager;
+
 //상품 등록 화면
 public class RegistPage extends ProductSubPage{
 	JComboBox box_top; //상위 카테고리
@@ -52,6 +54,8 @@ public class RegistPage extends ProductSubPage{
 	Image image; //파일 탐색기에서 선택한 파일
 	JButton bt_regist;
 	
+	DBManager dbManager;
+	
 	public RegistPage() {
 		box_top = new JComboBox();
 		box_sub = new JComboBox();
@@ -70,9 +74,10 @@ public class RegistPage extends ProductSubPage{
 		area = new JTextArea();
 		scroll = new JScrollPane(area);
 		p_content = new JPanel();
+		dbManager = new DBManager();
 		
-		topCategoryDAO = new TopCategoryDAO();
-		subCategoryDAO = new SubCategoryDAO();
+		topCategoryDAO = new TopCategoryDAO(dbManager);
+		subCategoryDAO = new SubCategoryDAO(dbManager);
 		
 		chooser = new JFileChooser("D:/morning/html_workspace/images");
 		bt_regist = new JButton("등록");
@@ -162,7 +167,7 @@ public class RegistPage extends ProductSubPage{
 			
 			//file 객체를 이미지로 변환하기
 			try {
-				ImageIO.read(file); //BufferedImage 반환. buffimage는 이미지 변환 가능. 훨씬 다양한 변환이 가능하다.
+				image=ImageIO.read(file); //BufferedImage 반환. buffimage는 이미지 변환 가능. 훨씬 다양한 변환이 가능하다.
 				//p_preview 패널의 그림 다시 그리기 요청
 				//repaint()  -> update() -> paint()
 				p_preview.repaint();

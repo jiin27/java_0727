@@ -8,12 +8,15 @@ import java.sql.SQLException;
 
 import org.sp.shop.admin.domain.Admin;
 
+import util.DBManager;
+
 //오직 admin 테이블에 대한 CRUD 만을 담당하기 위한 객체
 public class AdminDAO {
-	String url="jdbc:oracle:thin:@localhost:1521:XE";
-	String user="shop";
-	String password="1234";
+	DBManager dbManager;
 	
+	public AdminDAO(DBManager dbManager) {
+		this.dbManager = dbManager;
+	}
 	
 	//아래의 로그인 메서드를 호출한 사람에게 결과를 알려줘야 한다.
 	//로그인을 성공한 사람은시스템이 기억해야 한다.
@@ -24,10 +27,8 @@ public class AdminDAO {
 		Admin dto=null; //로그인 후 해당 관리자1사람 정보를 담기 위한 객체
 		
 		try {
-			//드라이버 로드
-			Class.forName("oracle.jdbc.driver.OracleDriver");
+			con=dbManager.connect();
 			
-			con=DriverManager.getConnection(url, user, password);
 			if(con==null) {
 				System.out.println("접속 실패");
 			}else {
@@ -52,32 +53,10 @@ public class AdminDAO {
 			}
 			
 			
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			if(rs!=null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if(pstmt!=null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if(con!=null) {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+			dbManager.release(con, pstmt, rs);
 		}
 		return dto;
 	}
