@@ -26,9 +26,14 @@ public class ProductDAO {
 		con=dbManager.connect();
 		
 		StringBuilder sb=new StringBuilder();
-		sb.append("insert into product(prodcut_idx, product_name");
+		sb.append("insert into product(product_idx, product_name");
 		sb.append(", brand, price, filename, detail");
 		sb.append(", subcategory_idx) values(seq_product.nextval, ?, ?, ?, ?, ?, ?)");
+		
+		/*자바에서 바인드 변수는 ? 사용
+		 * 데이터베이스의 성능 향상을 위한 튜닝 목적으로 사용.
+		 * 쿼리문에서 변하는 데이터를 바인드 변수로 입력하면 컴파일 대상이 되지 않음. 지속적인 쿼리문의 끊임없는 컴파일을 막음
+		 * */
 		
 		try {
 			pstmt=con.prepareStatement(sb.toString());
@@ -47,5 +52,14 @@ public class ProductDAO {
 			dbManager.release(con, pstmt);
 		}
 		return result;
+	}
+	
+	//모든 상품 가져오기(하위 카테고리도 함게 - join)
+	public void selectAll() {
+		StringBuilder sb=new StringBuilder();
+		sb.append("select subname, product_idx, product_name, brand, price, filename");
+		sb.append(" from subcategory s, product p");
+		sb.append(" where s.subcategory_idx = p.subcategory_idx");
+		
 	}
 }
