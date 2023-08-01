@@ -7,7 +7,8 @@ public class Product {
 	private int price;
 	private String filename;
 	private String detail;
-	private int subcategory_idx;
+	private SubCategory subCategory; //객체 자료형
+	
 	public int getProduct_idx() {
 		return product_idx;
 	}
@@ -44,12 +45,13 @@ public class Product {
 	public void setDetail(String detail) {
 		this.detail = detail;
 	}
-	public int getSubcategory_idx() {
-		return subcategory_idx;
+	public SubCategory getSubCategory() {
+		return subCategory;
 	}
-	public void setSubcategory_idx(int subcategory_idx) {
-		this.subcategory_idx = subcategory_idx;
+	public void setSubCategory(SubCategory subCategory) {
+		this.subCategory = subCategory;
 	}
+	
 	
 	
 }

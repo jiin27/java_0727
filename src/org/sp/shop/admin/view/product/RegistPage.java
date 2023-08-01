@@ -207,7 +207,7 @@ public class RegistPage extends ProductSubPage{
 			dto.setPrice(price);
 			dto.setFilename(filename);
 			dto.setDetail(detail);
-			dto.setSubcategory_idx(subCategory.getSubcategory_idx());
+			dto.setSubCategory(subCategory); //productDTO 안에 subCategory DTO 넣기
 			
 			//DAO를 이용하여 오라클에 insert
 			int result=productDAO.insert(dto);
